@@ -16,8 +16,8 @@ const firebaseConfig = {
 // During Next.js static build/SSR the NEXT_PUBLIC_* vars may be absent,
 // which would otherwise cause "auth/invalid-api-key" at prerender time.
 let app: FirebaseApp | null = null;
-let db: Firestore | null = null;
-let auth: Auth | null = null;
+let dbInstance: Firestore | null = null;
+let authInstance: Auth | null = null;
 
 if (typeof window !== "undefined" || process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
   app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
@@ -28,12 +28,15 @@ if (typeof window !== "undefined" || process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
       ? databaseId
       : undefined;
 
-  db = normalizedDatabaseId
+  dbInstance = normalizedDatabaseId
     ? getFirestore(app, normalizedDatabaseId)
     : getFirestore(app);
 
-  auth = getAuth(app);
+  authInstance = getAuth(app);
 }
 
-export { db, auth };
+// Cast them to their actual types so the rest of the application
+// doesn't complain about nulls. They will be non-null on the client.
+export const db = dbInstance as Firestore;
+export const auth = authInstance as Auth;
 export default app;
