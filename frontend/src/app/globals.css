@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-monad: #5e42f5;
+  --color-monad-light: #f3f0ff;
+  --color-monad-dark: #4f36d6;
+  --color-success: #10b981;
+  --color-success-bg: #ecfdf5;
+}
+
+:root {
+  --bg: #ffffff;
+  --panel: #f9fafb;
+  --panel-hi: #f3f4f6;
+  --text: #111827;
+  --dim: #4b5563;
+  --very-dim: #9ca3af;
+  --line: #e5e7eb;
+  --line-hi: #d1d5db;
+  --brand: #5e42f5;
+  --success: #10b981;
+  --success-bg: #ecfdf5;
+  --radius: 0px;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-inter), sans-serif;
+}
+
+/* Base typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Custom Utilities for the Grid Aesthetic */
+.blitz-mono {
+  font-family: var(--font-mono), monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+}
+
+/* Flat Grid Border utilities */
+.grid-border-b { border-bottom: 1px solid var(--line); }
+.grid-border-r { border-right: 1px solid var(--line); }
+.grid-border-t { border-top: 1px solid var(--line); }
+.grid-border-l { border-left: 1px solid var(--line); }
+.grid-panel { background-color: var(--panel); }
+.grid-panel-hi { background-color: var(--panel-hi); }
+
+/* Remove previous animations/glows */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line-hi);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--very-dim);
+}

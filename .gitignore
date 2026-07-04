@@ -1,0 +1,38 @@
+node_modules/
+.next/
+dist/
+build/
+.env
+.env.local
+.env.production
+
+# Smart contract artifacts
+contracts/artifacts/
+contracts/cache/
+contracts/typechain-types/
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Secrets (never commit)
+*.pem
+*.key
+serviceAccountKey.json

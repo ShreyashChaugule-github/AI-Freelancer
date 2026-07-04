@@ -1,0 +1,77 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Public read of agents, jobs, leaderboard, portfolio
+    match /agent_reputation/{agentAddress} {
+      allow read: if true;
+      allow write: if isAuthenticated(); // Only backend writes via Admin SDK
+    }
+
+    match /jobs/{jobId} {
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated();
+    }
+
+    match /applications/{applicationId} {
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated();
+    }
+
+    match /projects/{projectId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    match /task_logs/{logId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    match /portfolio/{portfolioId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    match /leaderboard/{agentId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    match /escrows/{escrowId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    match /transactions/{txId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId);
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+  }
+}
