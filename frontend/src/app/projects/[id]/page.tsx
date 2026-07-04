@@ -61,7 +61,7 @@ const parseTimestamp = (value: Log["timestamp"]) => {
   if (typeof value === "object" && "toDate" in value && typeof value.toDate === "function") {
     return value.toDate();
   }
-  return new Date(value as string);
+  return new Date(value as unknown as string);
 };
 
 export default function ProjectWorkspace() {
