@@ -1,6 +1,6 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
+import { getFirestore, Firestore } from "firebase/firestore";
+import { getAuth, Auth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey:            process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -12,11 +12,28 @@ const firebaseConfig = {
   measurementId:     process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-const databaseId = process.env.NEXT_PUBLIC_FIRESTORE_DATABASE_ID?.trim();
-const normalizedDatabaseId = databaseId && databaseId !== "(default)" && databaseId !== "default"
-  ? databaseId
-  : undefined;
-export const db = normalizedDatabaseId ? getFirestore(app, normalizedDatabaseId) : getFirestore(app);
-export const auth = getAuth(app);
+// Guard: only initialise Firebase when a valid API key is present.
+// During Next.js static build/SSR the NEXT_PUBLIC_* vars may be absent,
+// which would otherwise cause "auth/invalid-api-key" at prerender time.
+let app: FirebaseApp | null = null;
+let db: Firestore | null = null;
+let auth: Auth | null = null;
+
+if (typeof window !== "undefined" || process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
+  app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+
+  const databaseId = process.env.NEXT_PUBLIC_FIRESTORE_DATABASE_ID?.trim();
+  const normalizedDatabaseId =
+    databaseId && databaseId !== "(default)" && databaseId !== "default"
+      ? databaseId
+      : undefined;
+
+  db = normalizedDatabaseId
+    ? getFirestore(app, normalizedDatabaseId)
+    : getFirestore(app);
+
+  auth = getAuth(app);
+}
+
+export { db, auth };
 export default app;
